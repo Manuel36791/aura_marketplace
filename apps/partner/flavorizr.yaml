@@ -1,0 +1,22 @@
+flavors:
+  dev:
+    app:
+      name: "(DEV) Aura Partner"
+    android:
+      applicationId: "com.aura.partner.dev"
+    ios:
+      bundleId: "com.aura.partner.dev"
+  stg:
+    app:
+      name: "(STG) Aura Partner"
+    android:
+      applicationId: "com.aura.partner.stg"
+    ios:
+      bundleId: "com.aura.partner.stg"
+  prod:
+    app:
+      name: "Aura Partner"
+    android:
+      applicationId: "com.aura.partner"
+    ios:
+      bundleId: "com.aura.partner"

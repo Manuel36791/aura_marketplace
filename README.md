@@ -12,8 +12,8 @@ A multi-vendor e-commerce platform built as a 3-app Flutter monorepo — built p
 
 ## ✅ Progress / Features
 
-- [x] Multi-environment flavors (dev/staging/prod) — Store app, via `flutter_flavorizr`
-- [ ] Melos monorepo + Courier & Partner apps + shared `core_ui` package
+- [x] Multi-environment flavors (dev/stg/prod) — Store app, via `flutter_flavorizr`
+- [x] Melos monorepo + Courier & Partner apps + shared `core_ui` package
 - [ ] Dependency injection (`get_it` + `injectable`)
 - [ ] Auth — Bloc, token refresh, secure storage
 - [ ] Product catalog & inventory — Riverpod
@@ -38,7 +38,29 @@ A multi-vendor e-commerce platform built as a 3-app Flutter monorepo — built p
 
 ## 🏗️ Architecture
 
-Clean Architecture across all three apps, with a shared `core_ui` design system package and shared infrastructure (networking, DI, security) once the monorepo lands in PR #2.
+A [Melos](https://melos.invertase.dev/)-managed monorepo:
+
+```
+aura_marketplace/
+├── apps/
+│   ├── store/       # customer-facing app
+│   ├── courier/     # delivery/courier app
+│   └── partner/     # vendor/seller app
+├── packages/
+│   └── core_ui/     # shared design system (theme, colors, common widgets)
+└── pubspec.yaml
+```
+
+Clean Architecture within each app; shared theming and (soon) shared infrastructure — networking, DI, security — live in `packages/`.
+
+### Working with the monorepo
+
+```bash
+dart pub global activate melos
+melos bootstrap   # link packages + install deps across the workspace
+melos run analyze
+melos run test
+```
 
 ---
 
@@ -48,7 +70,7 @@ The Store app ships with three build flavors — `dev`, `stg`, and `prod` — co
 
 ### Why flavors?
 
-Running dev, staging, and production builds side-by-side on the same device (different bundle IDs, app names, and icons) is essential for any real-world app — no more manually switching API URLs or overwriting your test build with prod.
+Running dev, stg, and production builds side-by-side on the same device (different bundle IDs, app names, and icons) is essential for any real-world app — no more manually switching API URLs or overwriting your test build with prod.
 
 ### What's included
 
@@ -89,7 +111,7 @@ flavors:
 
 Generate the native config:
 ```bash
-flutter pub run flutter_flavorizr
+dart pub run flutter_flavorizr
 ```
 
 ### Running
@@ -113,10 +135,11 @@ flutter build ipa --flavor prod
 
 ## 📜 Progress Log
 
-- **PR #1** — Multi-environment flavors (dev/staging/prod) for the Store app, via `flutter_flavorizr`
+- **PR #1** — Multi-environment flavors (dev/stg/prod) for the Store app, via `flutter_flavorizr`
+- **PR #2** — Converted to a Melos monorepo; added Courier and Partner apps; extracted shared `core_ui` design system package (orange brand theme)
 
 ---
 
 ## 🔜 Next up
 
-PR #2 will convert this into a Melos monorepo and add the Courier and Partner apps alongside Store.
+PR #3 will add dependency injection (`get_it` + `injectable`) shared across all three apps.
