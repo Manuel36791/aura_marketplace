@@ -1,0 +1,22 @@
+flavors:
+  dev:
+    app:
+      name: "(DEV) Aura Courier"
+    android:
+      applicationId: "com.aura.courier.dev"
+    ios:
+      bundleId: "com.aura.courier.dev"
+  stg:
+    app:
+      name: "(STG) Aura Courier"
+    android:
+      applicationId: "com.aura.courier.stg"
+    ios:
+      bundleId: "com.aura.courier.stg"
+  prod:
+    app:
+      name: "Aura Courier"
+    android:
+      applicationId: "com.aura.courier"
+    ios:
+      bundleId: "com.aura.courier"
