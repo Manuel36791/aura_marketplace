@@ -1,0 +1,8 @@
+.dart_tool/
+.idea/
+.vscode/
+*.iml
+pubspec_overrides.yaml
+build/
+.flutter-plugins-dependencies
+.DS_Store
