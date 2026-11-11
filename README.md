@@ -49,8 +49,7 @@ aura_marketplace/
 ├── packages/
 │   ├── core_ui/     # shared design system (theme, colors, common widgets)
 │   └── core_di/     # shared DI setup (get_it + injectable, AppConfig, Dio)
-├── melos.yaml
-└── pubspec.yaml
+└── pubspec.yaml     # workspace root + Melos config (Melos 7+ has no melos.yaml)
 ```
 
 Clean Architecture within each app; shared theming and (soon) shared infrastructure — networking, DI, security — live in `packages/`.
@@ -149,7 +148,7 @@ DI is handled by [`get_it`](https://pub.dev/packages/get_it) + [`injectable`](ht
 - **A real dependency graph from day one**: `Dio` is built from the active `AppConfig` (base URL, timeouts, logging in non-prod)
 
 ```dart
-await configureDependencies(F.appFlavor!.name);
+await configureDependencies(F.appFlavor.name);
 
 final dio = getIt<Dio>();           // already points at the right base URL
 final config = getIt<AppConfig>();  // dev / stg / prod

@@ -1,8 +1,24 @@
+# IDE / tooling
 .dart_tool/
 .idea/
 .vscode/
 *.iml
-pubspec_overrides.yaml
-build/
-.flutter-plugins-dependencies
 .DS_Store
+.flutter-plugins-dependencies
+pubspec_overrides.yaml
+
+# Build output
+build/
+
+# Generated at the workspace root by the IDE's Flutter plugin
+# (the real apps live in apps/)
+/android/
+/ios/
+/macos/
+
+# Per-machine / generated native files (any app)
+local.properties
+GeneratedPluginRegistrant.*
+Generated.xcconfig
+**/ephemeral/
+flutter_export_environment.sh

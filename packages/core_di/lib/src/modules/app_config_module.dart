@@ -17,7 +17,7 @@ abstract class AppConfigModule {
   @staging
   @singleton
   AppConfig stagingConfig() => const AppConfig(
-    flavorName: 'staging',
+    flavorName: 'stg',
     baseUrl: 'https://staging.api.aura-marketplace.example',
     enableLogging: true,
   );
