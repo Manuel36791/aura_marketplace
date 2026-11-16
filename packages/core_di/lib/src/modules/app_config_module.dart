@@ -8,7 +8,7 @@ const staging = Environment('stg');
 abstract class AppConfigModule {
   @dev
   @singleton
-  AppConfig dev() => const AppConfig(
+  AppConfig devConfig() => const AppConfig(
     flavorName: 'dev',
     baseUrl: 'https://dev.api.aura-marketplace.example',
     enableLogging: true,
@@ -24,7 +24,7 @@ abstract class AppConfigModule {
 
   @prod
   @singleton
-  AppConfig prod() => const AppConfig(
+  AppConfig prodConfig() => const AppConfig(
     flavorName: 'prod',
     baseUrl: 'https://api.aura-marketplace.example',
   );
