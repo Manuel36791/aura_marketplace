@@ -1,24 +1,24 @@
-import '../../domain/entities/auth_tokens.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class AuthTokensModel extends AuthTokens {
+part 'auth_tokens_model.g.dart';
+
+@JsonSerializable()
+class AuthTokensModel extends Equatable {
   const AuthTokensModel({
-    required super.accessToken,
-    required super.refreshToken,
+    required this.accessToken,
+    required this.refreshToken,
   });
 
   factory AuthTokensModel.fromJson(Map<String, dynamic> json) =>
-      AuthTokensModel(
-        accessToken: json['accessToken'] as String,
-        refreshToken: json['refreshToken'] as String,
-      );
+      _$AuthTokensModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    'accessToken': accessToken,
-    'refreshToken': refreshToken,
-  };
+  final String accessToken;
+  final String refreshToken;
 
-  factory AuthTokensModel.fromEntity(AuthTokens tokens) => AuthTokensModel(
-    accessToken: tokens.accessToken,
-    refreshToken: tokens.refreshToken,
-  );
+  Map<String, dynamic> toJson() => _$AuthTokensModelToJson(this);
+
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<Object?> get props => [accessToken, refreshToken];
 }

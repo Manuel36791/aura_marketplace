@@ -1,31 +1,28 @@
-import '../../domain/entities/user.dart';
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class UserModel extends User {
+part 'user_model.g.dart';
+
+@JsonSerializable()
+class UserModel extends Equatable {
   const UserModel({
-    required super.id,
-    required super.email,
-    required super.name,
-    super.avatarUrl,
+    required this.id,
+    required this.email,
+    required this.name,
+    this.avatarUrl,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    id: json['id'] as String,
-    email: json['email'] as String,
-    name: json['name'] as String,
-    avatarUrl: json['avatarUrl'] as String?,
-  );
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'email': email,
-    'name': name,
-    'avatarUrl': avatarUrl,
-  };
+  final String id;
+  final String email;
+  final String name;
+  final String? avatarUrl;
 
-  factory UserModel.fromEntity(User user) => UserModel(
-    id: user.id,
-    email: user.email,
-    name: user.name,
-    avatarUrl: user.avatarUrl,
-  );
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<Object?> get props => [id, email, name, avatarUrl];
 }

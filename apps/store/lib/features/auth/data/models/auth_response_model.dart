@@ -1,22 +1,24 @@
+import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 import 'auth_tokens_model.dart';
 import 'user_model.dart';
 
-class AuthResponseModel {
+part 'auth_response_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+class AuthResponseModel extends Equatable {
   const AuthResponseModel({required this.user, required this.tokens});
+
+  factory AuthResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$AuthResponseModelFromJson(json);
 
   final UserModel user;
   final AuthTokensModel tokens;
 
-  factory AuthResponseModel.fromJson(Map<String, dynamic> json) =>
-      AuthResponseModel(
-        user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
-        tokens: AuthTokensModel.fromJson(
-          json['tokens'] as Map<String, dynamic>,
-        ),
-      );
+  Map<String, dynamic> toJson() => _$AuthResponseModelToJson(this);
 
-  Map<String, dynamic> toJson() => {
-    'user': user.toJson(),
-    'tokens': tokens.toJson(),
-  };
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<Object?> get props => [user, tokens];
 }

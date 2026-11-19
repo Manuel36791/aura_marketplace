@@ -7,6 +7,8 @@ import 'package:store/features/auth/data/models/auth_response_model.dart';
 import 'package:store/features/auth/data/models/auth_tokens_model.dart';
 import 'package:store/features/auth/data/models/user_model.dart';
 import 'package:store/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:store/features/auth/domain/entities/auth_tokens.dart';
+import 'package:store/features/auth/domain/entities/user.dart';
 import 'package:store/features/auth/domain/failures/auth_failure.dart';
 
 class MockAuthRemoteDataSource extends Mock implements AuthRemoteDataSource {}
@@ -32,6 +34,12 @@ void main() {
   const testAuthResponse = AuthResponseModel(
     user: testUserModel,
     tokens: testTokensModel,
+  );
+
+  const testUser = User(
+    id: 'usr_1',
+    email: 'user@aura.example',
+    name: 'Aura Shopper',
   );
 
   setUp(() {
@@ -62,7 +70,7 @@ void main() {
             password: 'password123',
           );
 
-          expect(result, equals(testUserModel));
+          expect(result, equals(testUser));
           verify(
             () => mockRemoteDataSource.login(
               email: 'user@aura.example',
@@ -125,7 +133,7 @@ void main() {
           password: 'password123',
         );
 
-        expect(result, equals(testUserModel));
+        expect(result, equals(testUser));
       });
 
       test('maps 409 status to EmailAlreadyInUseFailure', () async {
@@ -193,7 +201,7 @@ void main() {
 
           final result = await repository.restoreSession();
 
-          expect(result, equals(testUserModel));
+          expect(result, equals(testUser));
           verify(() => mockRemoteDataSource.getCurrentUser()).called(1);
           verify(() => mockLocalDataSource.saveUser(testUserModel)).called(1);
         },
@@ -234,25 +242,29 @@ void main() {
 
         final result = await repository.restoreSession();
 
-        expect(result, equals(testUserModel));
+        expect(result, equals(testUser));
       });
     });
 
     group('refreshToken', () {
       test('fetches new tokens and saves them locally', () async {
-        const newTokens = AuthTokensModel(
+        const newTokensModel = AuthTokensModel(
+          accessToken: 'new-access',
+          refreshToken: 'new-refresh',
+        );
+        const expectedTokens = AuthTokens(
           accessToken: 'new-access',
           refreshToken: 'new-refresh',
         );
         when(() => mockRemoteDataSource.refreshToken('old-refresh'))
-            .thenAnswer((_) async => newTokens);
-        when(() => mockLocalDataSource.saveTokens(newTokens))
+            .thenAnswer((_) async => newTokensModel);
+        when(() => mockLocalDataSource.saveTokens(newTokensModel))
             .thenAnswer((_) async {});
 
         final result = await repository.refreshToken('old-refresh');
 
-        expect(result, equals(newTokens));
-        verify(() => mockLocalDataSource.saveTokens(newTokens)).called(1);
+        expect(result, equals(expectedTokens));
+        verify(() => mockLocalDataSource.saveTokens(newTokensModel)).called(1);
       });
     });
   });

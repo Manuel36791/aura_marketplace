@@ -9,6 +9,8 @@ import '../../domain/failures/auth_failure.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_data_source.dart';
 import '../datasources/auth_remote_data_source.dart';
+import '../mappers/auth_tokens_mapper.dart';
+import '../mappers/user_mapper.dart';
 
 @LazySingleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
@@ -31,8 +33,9 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       await _localDataSource.saveTokens(response.tokens);
       await _localDataSource.saveUser(response.user);
-      _authStateController.add(response.user);
-      return response.user;
+      final user = response.user.toEntity();
+      _authStateController.add(user);
+      return user;
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (_) {
@@ -54,8 +57,9 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       await _localDataSource.saveTokens(response.tokens);
       await _localDataSource.saveUser(response.user);
-      _authStateController.add(response.user);
-      return response.user;
+      final user = response.user.toEntity();
+      _authStateController.add(user);
+      return user;
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (_) {
@@ -84,28 +88,30 @@ class AuthRepositoryImpl implements AuthRepository {
     }
 
     try {
-      final remoteUser = await _remoteDataSource.getCurrentUser();
-      await _localDataSource.saveUser(remoteUser);
-      _authStateController.add(remoteUser);
-      return remoteUser;
+      final remoteUserModel = await _remoteDataSource.getCurrentUser();
+      await _localDataSource.saveUser(remoteUserModel);
+      final user = remoteUserModel.toEntity();
+      _authStateController.add(user);
+      return user;
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         await _localDataSource.clearAll();
         _authStateController.add(null);
         return null;
       }
-      // If network failure, fall back to locally cached user
-      final cachedUser = await _localDataSource.getUser();
-      if (cachedUser != null) {
-        _authStateController.add(cachedUser);
-        return cachedUser;
+      final cachedUserModel = await _localDataSource.getUser();
+      if (cachedUserModel != null) {
+        final user = cachedUserModel.toEntity();
+        _authStateController.add(user);
+        return user;
       }
       return null;
     } catch (_) {
-      final cachedUser = await _localDataSource.getUser();
-      if (cachedUser != null) {
-        _authStateController.add(cachedUser);
-        return cachedUser;
+      final cachedUserModel = await _localDataSource.getUser();
+      if (cachedUserModel != null) {
+        final user = cachedUserModel.toEntity();
+        _authStateController.add(user);
+        return user;
       }
       return null;
     }
@@ -114,9 +120,9 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthTokens> refreshToken(String refreshToken) async {
     try {
-      final newTokens = await _remoteDataSource.refreshToken(refreshToken);
-      await _localDataSource.saveTokens(newTokens);
-      return newTokens;
+      final newTokensModel = await _remoteDataSource.refreshToken(refreshToken);
+      await _localDataSource.saveTokens(newTokensModel);
+      return newTokensModel.toEntity();
     } on DioException catch (e) {
       throw _handleDioError(e);
     } catch (_) {

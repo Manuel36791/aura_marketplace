@@ -1,11 +1,11 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class AuthTokens extends Equatable {
-  const AuthTokens({required this.accessToken, required this.refreshToken});
+part 'auth_tokens.freezed.dart';
 
-  final String accessToken;
-  final String refreshToken;
-
-  @override
-  List<Object?> get props => [accessToken, refreshToken];
+@freezed
+abstract class AuthTokens with _$AuthTokens {
+  const factory AuthTokens({
+    required String accessToken,
+    required String refreshToken,
+  }) = _AuthTokens;
 }

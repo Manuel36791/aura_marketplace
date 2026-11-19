@@ -17,6 +17,9 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(const AuthTokens(accessToken: '', refreshToken: ''));
+    registerFallbackValue(
+      const AuthTokensModel(accessToken: '', refreshToken: ''),
+    );
     registerFallbackValue(RequestOptions(path: ''));
     registerFallbackValue(Options());
   });

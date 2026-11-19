@@ -3,20 +3,18 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain/entities/auth_tokens.dart';
-import '../../domain/entities/user.dart';
 import '../models/auth_tokens_model.dart';
 import '../models/user_model.dart';
 
 abstract class AuthLocalDataSource {
-  Future<void> saveTokens(AuthTokens tokens);
-  Future<AuthTokens?> getTokens();
+  Future<void> saveTokens(AuthTokensModel tokens);
+  Future<AuthTokensModel?> getTokens();
   Future<String?> getAccessToken();
   Future<String?> getRefreshToken();
   Future<void> clearTokens();
 
-  Future<void> saveUser(User user);
-  Future<User?> getUser();
+  Future<void> saveUser(UserModel user);
+  Future<UserModel?> getUser();
   Future<void> clearUser();
 
   Future<void> clearAll();
@@ -33,13 +31,13 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   static const _userKey = 'auth_user';
 
   @override
-  Future<void> saveTokens(AuthTokens tokens) async {
+  Future<void> saveTokens(AuthTokensModel tokens) async {
     await _storage.write(key: _accessTokenKey, value: tokens.accessToken);
     await _storage.write(key: _refreshTokenKey, value: tokens.refreshToken);
   }
 
   @override
-  Future<AuthTokens?> getTokens() async {
+  Future<AuthTokensModel?> getTokens() async {
     final access = await _storage.read(key: _accessTokenKey);
     final refresh = await _storage.read(key: _refreshTokenKey);
     if (access == null || refresh == null) {
@@ -61,13 +59,12 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   }
 
   @override
-  Future<void> saveUser(User user) async {
-    final model = UserModel.fromEntity(user);
-    await _storage.write(key: _userKey, value: jsonEncode(model.toJson()));
+  Future<void> saveUser(UserModel user) async {
+    await _storage.write(key: _userKey, value: jsonEncode(user.toJson()));
   }
 
   @override
-  Future<User?> getUser() async {
+  Future<UserModel?> getUser() async {
     final raw = await _storage.read(key: _userKey);
     if (raw == null) {
       return null;
