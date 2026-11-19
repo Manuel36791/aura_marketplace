@@ -15,7 +15,7 @@ A multi-vendor e-commerce platform built as a 3-app Flutter monorepo — built p
 - [x] Multi-environment flavors (dev/stg/prod) — Store app, via `flutter_flavorizr`
 - [x] Melos monorepo + Courier & Partner apps + shared `core_ui` package
 - [x] Dependency injection (`get_it` + `injectable`) — shared `core_di` package
-- [ ] Auth — Bloc, token refresh, secure storage
+- [x] Auth — Bloc, token refresh, secure storage
 - [ ] Product catalog & inventory — Riverpod
 - [ ] Checkout — domain events / CQRS-lite
 - [ ] Offline-first product browsing (`drift`)
@@ -164,12 +164,13 @@ melos run generate   # build_runner across every package that uses it
 
 ## 📜 Progress Log
 
-- **PR #1** — Multi-environment flavors (dev/stg/prod) for the Store app, via `flutter_flavorizr`
-- **PR #2** — Converted to a Melos monorepo; added Courier and Partner apps; extracted shared `core_ui` design system package (orange brand theme)
-- **PR #3** — Dependency injection with `get_it` + `injectable`; shared `core_di` micro package with environment-aware `AppConfig` and `Dio`
+- **Step 1** — Multi-environment flavors (dev/stg/prod) for the Store app, via `flutter_flavorizr`
+- **Step 2** — Converted to a Melos monorepo; added Courier and Partner apps; extracted shared `core_ui` design system package (orange brand theme)
+- **Step 3** — Dependency injection with `get_it` + `injectable`; shared `core_di` micro package with environment-aware `AppConfig` and `Dio`
+- **Step 4** — Authentication in the Store app: Clean Architecture + Bloc, token management with `flutter_secure_storage`, Dio refresh-and-retry interceptor, session gate, and unit/widget tests
 
 ---
 
 ## 🔜 Next up
 
-PR #4 will add authentication to the Store app — Bloc, token refresh via a Dio interceptor, and secure token storage.
+Step 5 will add product catalog and inventory in the Partner app using Riverpod.

@@ -1,35 +1,26 @@
+import 'package:core_di/core_di.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/presentation/bloc/auth_event.dart';
+import 'features/auth/presentation/screens/session_gate.dart';
 import 'flavors.dart';
-import 'pages/my_home_page.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: F.title,
-      theme: AuraTheme.light(),
-      darkTheme: AuraTheme.dark(),
-      home: _flavorBanner(child: MyHomePage(), show: kDebugMode),
+    return BlocProvider(
+      create: (_) => getIt<AuthBloc>()..add(const AuthCheckRequested()),
+      child: MaterialApp(
+        title: F.title,
+        theme: AuraTheme.light(),
+        darkTheme: AuraTheme.dark(),
+        home: const SessionGate(),
+      ),
     );
   }
-
-  Widget _flavorBanner({required Widget child, bool show = true}) => show
-      ? Banner(
-          location: BannerLocation.topStart,
-          message: F.name,
-          color: Colors.green.withAlpha(150),
-          textStyle: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 12.0,
-            letterSpacing: 1.0,
-          ),
-          textDirection: TextDirection.ltr,
-          child: child,
-        )
-      : Container(child: child);
 }
