@@ -33,6 +33,7 @@ Completed and merged to `main`:
 - **Step 1 — Flavors.** `dev` / `stg` / `prod` via `flutter_flavorizr`. Each app has its own `flavorizr.yaml` and a **single** `lib/main.dart`. Flavorizr generates `lib/flavors.dart` (the `F` class); `main.dart` sets `F.appFlavor` from Flutter's `appFlavor` global. Flavorizr does not create any app-level config, so `AppConfig` was built by hand.
 - **Step 2 — Melos monorepo.** Melos 8 with Dart pub workspaces. There is **no `melos.yaml`**: Melos config and scripts live in the **root `pubspec.yaml`** under `melos:`. Shared dependency versions are declared in `melos.command.bootstrap`.
 - **Step 3 — Dependency injection.** `get_it` + `injectable`. `core_di` is a micro package (`@InjectableInit.microPackage()`, generated class `CoreDiPackageModule`). Each app has `lib/core/di/injection.dart` which pulls it in via `externalPackageModulesBefore: [ExternalModule(CoreDiPackageModule)]` and exposes `configureDependencies(String environment)`. The environment string is the flavor name (`dev` / `stg` / `prod`).
+- **Step 4 — Auth (Store app).** Clean Architecture + Bloc in `apps/store`, token management with `flutter_secure_storage`, Dio refresh-and-retry interceptor, session gate, and comprehensive unit/widget tests.
 - **Hotfix (GitHub PR #4 and follow-up).** Fixed DI wiring, repo hygiene (`.gitignore`, untracked IDE/generated files), template tests and placeholders.
 
 ### Verification completed
@@ -107,8 +108,8 @@ Legend: ✅ done · ⏭️ next · ⬜ not started
 | 1 | Flavors (dev/stg/prod) | store | flutter_flavorizr, per-flavor IDs and icons | ✅ |
 | 2 | Melos monorepo + courier + partner + `core_ui` | all | Workspaces, shared design system | ✅ |
 | 3 | DI with `get_it` + `injectable` + `core_di` | all | Micro package, environment-aware config | ✅ |
-| 4 | **Auth** — Bloc, token refresh, secure storage | store | Clean Architecture + Bloc, Dio interceptor | ⏭️ |
-| 5 | Product catalog and inventory — Riverpod | partner | Bloc vs Riverpod, same architecture | ⬜ |
+| 4 | **Auth** — Bloc, token refresh, secure storage | store | Clean Architecture + Bloc, Dio interceptor | ✅ |
+| 5 | Product catalog and inventory — Riverpod | partner | Bloc vs Riverpod, same architecture | ⏭️ |
 | 6 | Checkout — domain events / CQRS-lite | store | Command/query separation | ⬜ |
 | 7 | Offline-first product browsing — `drift` + sync | store | Local persistence, conflict resolution | ⬜ |
 | 8 | Live order tracking — location stream + maps | courier → store | Streams, `google_maps_flutter`, background location | ⬜ |

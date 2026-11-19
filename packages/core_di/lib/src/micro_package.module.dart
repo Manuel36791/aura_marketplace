@@ -17,7 +17,7 @@ const String _prod = 'prod';
 const String _stg = 'stg';
 
 class CoreDiPackageModule extends _i526.MicroPackageModule {
-// initializes the registration of main-scope dependencies inside of GetIt
+  // initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     final appConfigModule = _$AppConfigModule();
